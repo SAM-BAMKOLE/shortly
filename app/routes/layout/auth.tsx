@@ -15,7 +15,7 @@ export default function EnsureUnAuth({ loaderData }: Route.ComponentProps) {
     useEffect(() => {
         // @ts-ignore
         if (loaderData?.user) {
-            navigate("/auth/dashboard");
+            navigate("/url/dashboard");
         } else {
             setIsAuth(true);
         }

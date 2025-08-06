@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+
+    "start": "react-router-serve ./build/server/index.js",
+
+    "typecheck": "react-router typegen && tsc -p tsconfig.json && tsc -p tsconfig.server.json --noEmit",
+
+    "server:dev": "tsx watch server.ts",
+    "build:server": "tsc -p tsconfig.server.json",
+    "server:prod": "npm run build && npm run build:server && cross-env NODE_ENV=production node dist/server/server.js"
+  }
+}

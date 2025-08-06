@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  fullName  String
+  token     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  urls      Url[]
+}
+
+model Url {
+  id          String    @id @default(cuid())
+  originalUrl String
+  shortUrl    String    @unique
+  // customAlias String    @unique
+  title       String?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  expiresAt   DateTime?
+  creatorId   String // userId
+  status      String    @default("active") // active, disabled, expired, deleted
+  // tags        String? // JSON string array
+
+  // Calculated fields (updated via triggers or application logic)
+  totalClicks  Int @default(0)
+  uniqueClicks Int @default(0)
+
+  // User Relationships
+  creator User @relation(fields: [creatorId], references: [id])
+
+  // Analytics relationships
+  clicks     Click[]
+  dailyStats DailyStats[]
+
+  @@map("urls")
+}
+
+model Click {
+  id        String   @id @default(cuid())
+  urlId     String
+  timestamp DateTime @default(now())
+
+  // Geographic data
+  ipAddress String?
+  country   String?
+  region    String?
+  city      String?
+
+  // Device & Browser data
+  userAgent    String?
+  deviceType   String? // mobile, desktop, tablet, other
+  browser      String?
+
+  // Traffic source data
+  referer     String?
+
+  // Unique visitor tracking
+  // fingerprint String? // Browser fingerprint for unique visitor counting
+
+  // Relationships
+  url Url @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@index([urlId])
+  @@index([timestamp])
+  @@index([urlId, timestamp])
+  @@map("clicks")
+}
+
+// Pre-aggregated daily statistics for performance
+model DailyStats {
+  id           String   @id @default(cuid())
+  urlId        String
+  date         DateTime // Date only (no time component)
+  totalClicks  Int      @default(0)
+
+  // Geographic breakdown (JSON strings)
+  geographicData String? // JSON: [{ country: "US", clicks: 45 }]
+
+  // Device breakdown (JSON strings)
+  deviceData String? // JSON: [{ device: "desktop", clicks: 30 }]
+
+  // Referrer breakdown (JSON strings)  
+  referrerData String? // JSON: [{ source: "twitter", clicks: 20 }]
+
+  // Hourly breakdown (JSON string)
+  hourlyData String? // JSON: [{ hour: "09", clicks: 5 }]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  url Url @relation(fields: [urlId], references: [id], onDelete: Cascade)
+
+  @@unique([urlId, date])
+  @@index([urlId])
+  @@index([date])
+  @@map("daily_stats")
+}

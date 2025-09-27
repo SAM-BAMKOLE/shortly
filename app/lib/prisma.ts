@@ -4,8 +4,7 @@
 import pkg from "@prisma/client";
 const { PrismaClient } = pkg;
 
-import { PrismaClient } from "@prisma/client";
-
+//@ts-ignore
 let prisma: PrismaClient;
 
 if (process.env.TURSO_DATABASE_URL) {

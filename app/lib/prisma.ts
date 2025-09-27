@@ -29,4 +29,4 @@ if (process.env.TURSO_DATABASE_URL) {
   }
 }
 
-export default prisma;
+export { prisma };

@@ -4,8 +4,9 @@ import express from "express";
 import morgan from "morgan";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import pkg from "@prisma/client";
 
-import { PrismaClient } from "@prisma/client";
+const { PrismaClient } = pkg;
 
 dotenv.config();
 
@@ -61,7 +62,8 @@ app.get("/short/:shortUrl", async (req, res, next) => {
   res.redirect(urlRecord.originalUrl);
 
   if (ip === "::1") {
-    ip = "8.8.8.8"
+    // ip = "8.8.8.8"
+    ip = "65.183.7.11";
   }
 
   const API_KEY = process.env.IPGEOLOCATION_API_KEY;
@@ -71,13 +73,14 @@ app.get("/short/:shortUrl", async (req, res, next) => {
   (async () => {
     try {
       const geoData = await fetch(url).then((r) => r.json());
+      console.log(geoData)
 
       const clickData = {
           urlId: urlRecord.id,
-          ipAddress: ip || null,
-          country: geoData.country_name || null,
-          region: geoData.state_prov || null,
-          city: geoData.city || null,
+          ipAddress: ip ?? null,
+          country: geoData.country_name ?? null,
+          region: geoData.state_prov ?? null,
+          city: geoData.city ?? null,
           userAgent,
           deviceType: detectDeviceType(userAgent),
           browser: detectBrowser(userAgent),

@@ -4,7 +4,7 @@ import { prisma } from "~/lib/prisma";
 export async function getClicksData(userId: string) {
   const clicks = await prisma.click.groupBy({
     by: ["timestamp", "urlId"],
-    _count: { id: true },
+    _count: { _all: true },
     where: {
       url: { creatorId: userId }
     }
@@ -17,7 +17,7 @@ export async function getClicksData(userId: string) {
       dateMap.set(date, { clicks: 0, links: new Set() });
     }
     const entry = dateMap.get(date)!;
-    entry.clicks += c._count.id;
+    entry.clicks += c._count._all;
     entry.links.add(c.urlId);
   }
   return Array.from(dateMap.entries()).map(([date, { clicks, links }]) => ({
@@ -38,7 +38,7 @@ const DEVICE_COLORS: Record<string, string> = {
 export async function getDeviceData(userId: string) {
   const deviceCounts = await prisma.click.groupBy({
     by: ["deviceType"],
-    _count: { id: true },
+    _count: { _all: true },
     where: {
       url: { creatorId: userId }
     }
@@ -46,10 +46,10 @@ export async function getDeviceData(userId: string) {
   let desktop = 0, mobile = 0, tablet = 0, other = 0;
   for (const d of deviceCounts) {
     const type = (d.deviceType || "Other").toLowerCase();
-    if (type === "desktop") desktop += d._count.id;
-    else if (type === "mobile") mobile += d._count.id;
-    else if (type === "tablet") tablet += d._count.id;
-    else other += d._count.id;
+    if (type === "desktop") desktop += d._count._all;
+    else if (type === "mobile") mobile += d._count._all;
+    else if (type === "tablet") tablet += d._count._all;
+    else other += d._count._all;
   }
   return [
     { name: "Desktop", value: desktop, color: DEVICE_COLORS.Desktop },
@@ -63,19 +63,19 @@ export async function getDeviceData(userId: string) {
 export async function getLocationData(userId: string) {
   const locationCounts = await prisma.click.groupBy({
     by: ["country", "city"],
-    _count: { id: true },
+    _count: { _all: true },
     where: {
       url: { creatorId: userId }
     }
   });
-  const total = locationCounts.reduce((sum, c) => sum + c._count.id, 0);
+  const total = locationCounts.reduce((sum, c) => sum + c._count._all, 0);
   return locationCounts
     .filter(c => c.country)
     .map(c => ({
       country: c.country!,
       city: c.city || undefined,
-      clicks: c._count.id,
-      percentage: total ? Math.round((c._count.id / total) * 100) : 0,
+      clicks: c._count._all,
+      percentage: total ? Math.round((c._count._all / total) * 100) : 0,
     }))
     .sort((a, b) => b.clicks - a.clicks);
 }

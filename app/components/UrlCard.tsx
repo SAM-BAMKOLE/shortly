@@ -10,7 +10,7 @@ import {
     Trash2,
 } from "lucide-react";
 import { Link } from "react-router";
-import type { Url } from "~/generated/prisma";
+import type { Url } from "@prisma/client";
 import { copyToClipboard, formatDate, truncateUrl } from "~/utils/helpers";
 
 export const UrlCard = ({
@@ -61,7 +61,7 @@ export const UrlCard = ({
                                 to={`/url/detail/${url.shortUrl}`}
                                 className="flex items-center gap-2">
                                 <Eye className="w-4 h-4" />
-                                View Analytics
+                                View Details
                             </Link>
                         </li>
                         {/* <li>

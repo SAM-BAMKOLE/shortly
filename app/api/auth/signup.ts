@@ -18,6 +18,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         const newUser = await createUser(email, password, fullName);
         return redirect("/url/dashboard", { headers: setSessionCookie(newUser.token) });
     } catch (error) {
+        console.log(error)
         return { error: "Failed to sign up" };
     }
 };

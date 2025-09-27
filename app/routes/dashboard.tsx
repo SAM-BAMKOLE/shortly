@@ -238,10 +238,10 @@ const UserDashboard = ({ loaderData }: Route.ComponentProps) => {
                                 className="select"
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}>
-                                <option value="newest">Newest</option>
-                                <option value="oldest">Oldest</option>
-                                <option value="most-clicks">Most Clicks</option>
-                                <option value="least-clicks">Least Clicks</option>
+                                <option value="newest" className="">Newest</option>
+                                <option value="oldest" className="">Oldest</option>
+                                <option value="most-clicks" className="">Most Clicks</option>
+                                <option value="least-clicks" className="">Least Clicks</option>
                             </select>
                         </div>
 

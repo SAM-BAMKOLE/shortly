@@ -8,7 +8,7 @@
     "dev:start": "react-router-serve ./build/server/index.js",
     "server:dev": "tsx watch ./server.ts",
     "server:nodedev": "node ./server.js",
-    "start": "NODE_ENV=production node ./server.js",
+    "start": "node ./server.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
@@ -21,12 +21,11 @@
     "cookie": "^1.0.2",
     "dotenv": "^17.2.1",
     "express": "^4.21.2",
-    "firebase": "^12.0.0",
     "isbot": "^5.1.27",
     "lucide-react": "^0.525.0",
     "morgan": "^1.10.1",
     "nanoid": "^5.1.5",
-    "pocketbase": "^0.26.1",
+    "node-fetch": "^3.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.7.0",

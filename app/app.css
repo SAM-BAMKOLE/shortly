@@ -203,15 +203,15 @@ button {
 
 /* Modern Select Style */
 .select {
-    /* @apply glass w-36; */
-    @apply w-36;
+    @apply space-y-1;
+    background: var(--surface);
     border-radius: var(--rounded-md);
-    padding: 0.4rem 1rem;
+    padding: 0.875rem 1rem;
     font-size: 1rem;
     color: var(--text-primary);
-    background-color: #00000030;
     transition: all 0.3s ease;
     outline: none;
+
 }
 
 /* .select:hover {

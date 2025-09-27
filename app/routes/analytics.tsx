@@ -368,7 +368,7 @@ const AnalyticsOverview = ({ loaderData }: Route.ComponentProps) => {
                                         </div>
                                         <div className="space-y-4 max-h-96 overflow-scroll">
                                             <table className="table">
-                                                <thead>
+                                                <thead className="text-white">
                                                     <tr>
                                                         <th>S/N</th>
                                                         <th>Country</th>

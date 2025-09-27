@@ -6,6 +6,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "dev:start": "react-router-serve ./build/server/index.js",
+    "postinstall": "prisma generate",
     "server:dev": "tsx watch ./server.ts",
     "server:nodedev": "node ./server.js",
     "start": "node ./server.js",
